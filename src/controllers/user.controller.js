@@ -66,7 +66,7 @@ const createUser = async (req, res) => {
             res, 
             true, 
             201, 
-            "User berhasil dibuat", 
+            "Register Success", 
             {fullName, email, gender, country, phone})
 
     } catch (error) {
@@ -223,7 +223,7 @@ const loginUser = async (req, res) => {
             res, 
             true, 
             200, 
-            "Login berhasil",
+            "Login Success",
             {
                 token,
                 user : {
