@@ -1,11 +1,19 @@
 const express = require('express')
 const router = express.Router()
-const contactController = require('../controllers/contact.controller')
+const {
+    getAllContacts,
+    createContact,
+    updateContact,
+    deleteContact,
+    getContactById
+} = require('../controllers/contact.controller')
 
-router.get('/contacts', contactController.getAllContacts) 
-router.post('/contacts', contactController.createContact)
-router.put('/contacts/:contactId', contactController.updateContact)
-router.delete('/contacts/:contactId', contactController.deleteContact)
-router.get('/contacts/:contactId', contactController.getContactById)
+const {verifyToken} = require('../middlewares/auth.middleware')
+
+router.get('/contacts', verifyToken, getAllContacts) 
+router.post('/contacts', verifyToken, createContact)
+router.put('/contacts/:contactId', verifyToken, updateContact)
+router.delete('/contacts/:contactId', verifyToken, deleteContact)
+router.get('/contacts/:contactId', verifyToken, getContactById)
 
 module.exports = router

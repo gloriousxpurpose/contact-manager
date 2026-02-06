@@ -56,7 +56,14 @@ const createContact = async (req, res) => {
                 res, 
                 false, 
                 400, 
-                "Gagal membuat user")}       
+                "Gagal membuat user")}
+                
+        return successHandler(
+            res, 
+            true, 
+            201, 
+            "Course berhasil dibuat", 
+            createdContact)
 
     } catch (error) {
 
@@ -71,6 +78,7 @@ const createContact = async (req, res) => {
 const updateContact = async (req, res) => {
     try {
         const {contactId} = req.params
+
         const {fullName, email, phone, company, job_title, notes} = req.body 
 
         if (!fullName || !email || !phone || !company || !job_title || !notes ) {
@@ -96,7 +104,7 @@ const updateContact = async (req, res) => {
             true, 
             200, 
             "Contact berhasil diperbarui", 
-            {contactId, fullName, email, phone, company, job_title, notes})        
+            updatedContact)        
         
     } catch (error) {
 
@@ -136,10 +144,12 @@ const deleteContact = async (req, res) => {
                 "Contact tidak ditemukan")}
 
         return successHandler(
+
             res, 
             true, 
             200, 
-            "Contact berhasil dihapus", {contact})
+            "Contact berhasil dihapus", 
+            deletedContact)
             
     } catch (error) {
 
@@ -181,7 +191,6 @@ const getContactById = async (req, res) => {
             500, 
             `Internal Server Error: ${error.message}`)}
 }
-
 
 module.exports = {
     getAllContacts,

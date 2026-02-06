@@ -13,11 +13,11 @@ const createContact = (fullName, email, phone, company, job_title, notes) =>
     new Promise((resolve, reject) => {
         const sql = `
             INSERT INTO contacts (contact_id, fullname, email, phone, company, job_title, notes)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)`
+            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`
         const values = [uuidv4(), fullName, email, phone, company, job_title, notes]
 
         pool.query(sql, values)
-            .then(res => resolve(res))
+            .then(res => resolve(res.rows))
             .catch(err => reject(err))
     })
 
@@ -26,20 +26,20 @@ const updateContact = (contactId, fullName, email, phone, company, job_title, no
         const sql = `
             UPDATE contacts
             SET fullname = $1, email = $2, phone = $3, company = $4, job_title = $5, notes = $6
-            WHERE contact_id = $7
+            WHERE contact_id = $7 RETURNING *
         `
         const values = [fullName, email, phone, company, job_title, notes, contactId]
 
         pool.query(sql, values)
-            .then(res => resolve(res))
+            .then(res => resolve(res.rows))
             .catch(err => reject(err))
     })
 
 const deleteContact = (contactId) =>
     new Promise((resolve, reject) => {
-        const sql = `DELETE FROM contacts WHERE contact_id = $1`
+        const sql = `DELETE FROM contacts WHERE contact_id = $1 RETURNING *`
         pool.query(sql, [contactId])
-            .then(res => resolve(res))
+            .then(res => resolve(res.rows))
             .catch(err => reject(err))
     })
 
